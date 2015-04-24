@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Dave's Creations</title><link href="davidpowell.github.io/" rel="alternate"></link><link href="davidpowell.github.io/feeds/latex.atom.xml" rel="self"></link><id>davidpowell.github.io/</id><updated>2015-04-17T00:00:00+10:00</updated><entry><title>Automatically generating a publication list in LaTeX</title><link href="davidpowell.github.io/latex-publication-list.html" rel="alternate"></link><updated>2015-04-17T00:00:00+10:00</updated><author><name>David Powell</name></author><id>tag:,2015-04-17:davidpowell.github.io/latex-publication-list.html</id><summary type="html">&lt;div class="section" id="the-problem"&gt;
+&lt;h2&gt;The problem&lt;/h2&gt;
+&lt;p&gt;Living as I do on the academic treadmill, I spend a lot of my time writing grant applications.
+The major funding agency in Australia for non-medical research is the &lt;a class="reference external" href="http://www.arc.gov.au"&gt;Australian Research Council&lt;/a&gt;,
+so I often regularly to update my academic publication list according to their requirements:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;List all publications over the past 10 years (can vary depending on the scheme or round)&lt;/li&gt;
+&lt;li&gt;Separate them into journal papers, books, book chapters, conference proceedings etc.&lt;/li&gt;
+&lt;li&gt;Put a star next to the ones which are relevant to the particular project proposal.&lt;/li&gt;
+&lt;li&gt;Use 12 point font with minimum 0.5cm margins all around the page&lt;/li&gt;
+&lt;li&gt;Past grants awarded need to be listed, along with the papers that report their outcomes.&lt;/li&gt;
+&lt;li&gt;Not a requirement, but most people like to underline their own name&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The formatting instructions are apparently taken quite seriously, with grant applications having
+been ruled ineligible for violations.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="current-state-of-the-art"&gt;
+&lt;h2&gt;Current &amp;quot;state of the art&amp;quot;&lt;/h2&gt;
+&lt;p&gt;Most of my colleagues have an MS Word document listing all their publications, which they update
+for each round. I originally did this too, but I find it rather unappealing for the following reasons:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;It's a nuisance to manually format all bibliography entries to be consistent&lt;/li&gt;
+&lt;li&gt;Manually updating can easily lead to missed or duplicate entries&lt;/li&gt;
+&lt;li&gt;For numbered style bibliographies, the publications belonging to each grant need
+to be changed every time a paper is added.&lt;/li&gt;
+&lt;li&gt;Sometimes Word introduces seemingly random font and style changes&lt;/li&gt;
+&lt;li&gt;The number of years of publication history required sometimes changes between schemes and rounds&lt;/li&gt;
+&lt;li&gt;I much prefer the quality of typesetting produced by LaTeX&lt;/li&gt;
+&lt;li&gt;The publication list is essentially a database, and I find something philosophically wrong with
+using MS Word as a database tool&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="section" id="the-solution"&gt;
+&lt;h2&gt;The solution&lt;/h2&gt;
+&lt;p&gt;My solution was to create a LaTeX class and template which generates the document in
+a fairly automated manner. By keeping my publication database up to date in reference
+management software (which I do anyway), I can generate and update the required document fairly easily.&lt;/p&gt;
+&lt;p&gt;I organise the PDFs of my collection of papers with &lt;a class="reference external" href="http://www.zotero.org"&gt;Zotero&lt;/a&gt;, an open-source
+cross platform tool to manage your papers. It's along a similar vein to EndNote and Mendeley,
+so this solution should be adaptable by users of those programs. I keep my own
+publications in a collection, so they are easy to find and export.&lt;/p&gt;
+&lt;ol class="arabic"&gt;
+&lt;li&gt;&lt;p class="first"&gt;Make sure that each publication has the correct Item Type for a journal article, book chapter etc.
+This will ensure it gets listed under the appropriate category.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Ensure that each bibliography entry has a fixed BibTeX key, that doesn't change if your
+library changes. In Zotero, the best way to do this is with the
+&lt;a class="reference external" href="https://zotplus.github.io/better-bibtex/"&gt;Better BibTex&lt;/a&gt; plugin. Select all the entries,
+right click, and in the menu select &amp;quot;Generate BibTeX key&amp;quot;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Export the entries to BibLaTeX format (BibTeX format should be okay too) using the
+Better BibLaTeX exporter in Zotero.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Download the &lt;tt class="docutils literal"&gt;arcpubs&lt;/tt&gt; LaTeX &lt;a class="reference external" href="https://github.com/DavidPowell/arcpubs/archive/master.zip"&gt;class and template&lt;/a&gt;.
+Rename &lt;tt class="docutils literal"&gt;example.tex&lt;/tt&gt; to something else if you want, then open it in your favourite LaTeX editor.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;The required changes to this file are fairly straightforward:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Change the &lt;tt class="docutils literal"&gt;\addbibresource&lt;/tt&gt; line to the name of your &lt;tt class="docutils literal"&gt;.bib&lt;/tt&gt; file. You can
+have multiple calls if you need more than one file to be included.&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;\StartYear&lt;/tt&gt; command indicates that only publications from this year or
+later will be included&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;\Author&lt;/tt&gt; command should contain your surname, for the purposes of underlining it.
+Any publications not containing that name will be excluded from the list, so if you
+have a .bib file for your whole research group, your publications will be extracted.&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;\addtocategory{relevant}&lt;/tt&gt; gives the BibTeX keys of all publications relevant to this
+proposal, which will be starred.&lt;/li&gt;
+&lt;li&gt;In the table at the bottom of the page, list existing ARC grants, and &lt;cite&gt;cite&lt;/cite&gt; any papers
+relevant to them.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Compile the latex file to generate the pdf. Note that instead of BibTeX, BibLaTeX is used,
+because I needs its powerful features for filtering by year, category. Assuming you didn't
+rename the &lt;tt class="docutils literal"&gt;.tex&lt;/tt&gt; file, run:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+pdflatex example
+biber example
+pdflatex example
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If everything went smoothly, then you should have nice PDF output with the first page looking something like this.&lt;/p&gt;
+&lt;img alt="PDF Output" src="images/pubs_page_1.png" style="width: 400px;" /&gt;
+&lt;p&gt;Okay, I admit that's a lot of steps for a supposedly automated process, but after you've done it once
+it's quite quick and easy to keep it up to date. I expect that it could also be quite useful for
+anyone else trying to keep their academic CV up to date, even if they don't care about the particular
+requirements of the ARC.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="tips-and-potential-problems"&gt;
+&lt;h2&gt;Tips and potential problems&lt;/h2&gt;
+&lt;p&gt;Most windows users will have installed LaTeX using the MiKTeX distribution. Unfortunately the
+64 bit version of MikTex is missing the &lt;tt class="docutils literal"&gt;biber&lt;/tt&gt; command. However, the 32 bit version can be downloaded,
+and will work just fine. See these &lt;a class="reference external" href="http://tex.stackexchange.com/a/63048"&gt;instructions&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;It is necessary to check carefully over the document just to make sure that text hasn't run
+outside the margins, which occasionally happens when LaTeX cannot hyphenate long words or URLs.&lt;/p&gt;
+&lt;p&gt;The underlining of author name and selection of which entries to include is based on the surname,
+so you may get strange results if one of your co-authors has the same surname.&lt;/p&gt;
+&lt;/div&gt;
+</summary></entry></feed>
